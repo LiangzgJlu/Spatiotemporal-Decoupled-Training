@@ -19,13 +19,6 @@ def increment_path(path, exist_ok=False, sep="", mkdir=False):
                 break
         path = Path(p)
 
-        # Method 2 (deprecated)
-        # dirs = glob.glob(f"{path}{sep}*")  # similar paths
-        # matches = [re.search(rf"{path.stem}{sep}(\d+)", d) for d in dirs]
-        # i = [int(m.groups()[0]) for m in matches if m]  # indices
-        # n = max(i) + 1 if i else 2  # increment number
-        # path = Path(f"{path}{sep}{n}{suffix}")  # increment path
-
     if mkdir:
         path.mkdir(parents=True, exist_ok=True)  # make directory
 

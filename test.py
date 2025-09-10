@@ -28,7 +28,7 @@ def parse_option():
     parser.add_argument("--history_windows_length", type=int, default=25, help="history windows length")
     parser.add_argument("--project", default=ROOT / "runs/test", help="save to project/name")
     parser.add_argument("--name", default="exp", help="save to project/name")
-    parser.add_argument("--linear_normal", type=bool, default=False, help="feature linear normalization")
+    parser.add_argument("--linear_normal", type=bool, default=True, help="feature linear normalization")
     parser.add_argument("--device", type=str, default='cuda', help='cuda device')
     parser.add_argument("--time_step", type=float, default=0.04, help='time step')
     return parser.parse_args()
@@ -74,12 +74,11 @@ def test(opt, model: nn.Module, device):
             obs = torch.tensor(data).to(device)
             a = model(obs).detach().item()
             
-            
             acc = np.clip(a, -10, 10)
                     
-            if gap < 3:
-                acc = -9
-            
+            # if gap < 3:
+            #     acc = -9
+
             fv += acc * opt.time_step
     
             if fv < 0:
@@ -148,7 +147,24 @@ def main(opt):
     test(opt=opt, model=model, device=device)
 
 if __name__ == "__main__":
-    
+    """
+    Purpose:
+
+    Evaluate a trained car-following model (CFM) on test trajectories by rolling out predicted accelerations and computing trajectory-level metrics.
+    Key functionalities:
+
+    Argument parsing:
+
+    --weights: path to model weights (.pt/.pth).
+    --cfg: model configuration file path (used by create_model).
+    --dateset_path: path to the test trajectory .npy file .
+    --history_windows_length: number of past steps used as the initial context for rollout (default 25).
+    --project, --name: output directory control (results saved under runs/test/name with auto-incrementing exp folders).
+    --linear_normal: whether to apply feature-wise linear normalization based on FEATURE_RANGE.
+    --device: computation device (e.g., cuda or cpu).
+    --time_step: simulation time step in seconds (default 0.04).
+
+    """
     opt = parse_option()
     main(opt)
     

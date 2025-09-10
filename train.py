@@ -279,5 +279,37 @@ def parse_opt():
     return parser.parse_args()
 
 if __name__ == "__main__":
+    """
+    Purpose:
+
+    Train a car-following model (CFM) to predict acceleration from short histories of state features, with optional time-series-independent (TSI) training and validation via closed-loop rollout.
+    Main components:
+
+    Early stopping (EarlyStopper):
+
+    Tracks the best validation metric (gap MAE from a rollout evaluator).
+    Saves best model weights to best_path.
+    Restores the best weights and stops if no improvement for patience epochs.
+    Argument parsing (parse_opt):
+
+    --weights: path to initial weights.
+    --cfg: model config YAML for create_model.
+    --hyp: hyperparameters YAML (expects entries like lr0, momentum).
+    --dataset_path: training dataset path (.npy).
+    --val_dataset_path: validation dataset path (.npy) used by eval_model.
+    --history_windows_length: number of steps in the input window (default 25).
+    --noise: Gaussian noise std added to inputs during training (default 0.04).
+    --epochs, --batch_size: training schedule.
+    --device: cuda or cpu.
+    --optimizer: SGD, Adam, or AdamW (configured via smart_optimizer).
+    --project, --name: output directory control; runs saved under runs/train/name with auto-incremented folders.
+    --seed: global seed (not explicitly used here).
+    --linear_normal: whether to apply feature linear normalization.
+    --tsi: if 1, train with time-series-independent batches; if 0, construct samples per trajectory with sliding windows.
+    --time_step: simulation time step in seconds (default 0.04).
+    """
+
+
+
     opt = parse_opt()
     main(opt)
