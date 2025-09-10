@@ -1,0 +1,6 @@
+type: transformer
+net_config: 
+  input_dim: 4
+  d_model: 64
+  num_layers: 2
+  nhead: 4

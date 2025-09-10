@@ -1,0 +1,7 @@
+type: sparse_causal_transformer
+net_config: 
+  input_dim: 4
+  d_model: 32
+  num_layers: 2
+  nhead: 4
+  sparsity_factor: 4

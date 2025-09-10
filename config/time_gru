@@ -1,0 +1,6 @@
+type: time_rnn
+net_config: 
+  feature: 3
+  hidden_size: 64
+  num_layers: 2
+  time_length: 25
