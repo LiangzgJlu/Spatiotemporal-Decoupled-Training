@@ -76,8 +76,8 @@ def test(opt, model: nn.Module, device):
             
             acc = np.clip(a, -10, 10)
                     
-            # if gap < 3:
-            #     acc = -9
+            if gap < 3:
+                acc = -9
 
             fv += acc * opt.time_step
     

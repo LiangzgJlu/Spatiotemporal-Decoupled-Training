@@ -53,7 +53,7 @@ def linear_normal_feature(hfss):
     return hfss
 
 def eval_model(model, opt, device):
-    logger.info("start test cfm")
+    logger.info("start val cfm")
     model.eval()
     dataset = np.load(opt.val_dataset_path, allow_pickle=True)
     hwl = int(opt.history_windows_length)
@@ -153,14 +153,14 @@ def train(opt, model: nn.Module, device):
                 total_loss += loss.item()
             loss_list.append(total_loss)
             
-            val_error = eval_model(model=model, opt=opt, device=device)
-            
             logger.info(f"epoch: {i_episode}, total loss: {total_loss}")
-            
-            stopped = early_stopper(model, val_error, opt.best_path)
 
-            if stopped:
-                break
+            if opt.es:
+                val_error = eval_model(model=model, opt=opt, device=device)            
+                stopped = early_stopper(model, val_error, opt.best_path)
+
+                if stopped:
+                    break
             
             if min_loss > total_loss:
                 min_loss = total_loss
@@ -213,13 +213,15 @@ def train(opt, model: nn.Module, device):
                     j += 1
                     
             loss_list.append(total_loss)
-            val_error = eval_model(model=model, opt=opt, device=device)
-            stopped = early_stopper(model, val_error, opt.best_path)
-
-            if stopped:
-                break
-
             logger.info(f"epoch: {i_episode}, total loss: {total_loss}")
+
+            if opt.es:
+                val_error = eval_model(model=model, opt=opt, device=device)
+                stopped = early_stopper(model, val_error, opt.best_path)
+
+                if stopped:
+                    break
+
             
             if min_loss > total_loss:
                 min_loss = total_loss
@@ -276,6 +278,7 @@ def parse_opt():
     parser.add_argument("--linear_normal", type=bool, default=False, help="feature linear normalization")
     parser.add_argument("--tsi", type=int, default=1, help="time series independence train")
     parser.add_argument("--time_step", type=float, default=0.04, help='time step')
+    parser.add_argument('--es', action='store_true')
     return parser.parse_args()
 
 if __name__ == "__main__":
@@ -307,6 +310,7 @@ if __name__ == "__main__":
     --linear_normal: whether to apply feature linear normalization.
     --tsi: if 1, train with time-series-independent batches; if 0, construct samples per trajectory with sliding windows.
     --time_step: simulation time step in seconds (default 0.04).
+    --es: open early stop
     """
 
 

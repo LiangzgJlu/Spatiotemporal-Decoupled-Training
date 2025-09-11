@@ -16,19 +16,22 @@
   - The downloaded data is stored in a trajectory-wise format.
   - For SDT training, run the preprocessing script:
 ```shell 
-python -m utils.split_dataset.py --type=train --dataset_name=highd --save_path=/path/to/save_sdt_dataset.path --split_data_path=/path/to/download_dataset.npy --history_windows_length=25 --time_step=0.04
+python utils/split_dataset.py --type=train --dataset_name=highd --save_path=/path/to/save_sdt_dataset.path --split_data_path=/path/to/download_dataset.npy --history_windows_length=25 --time_step=0.04
 ```
 
 ## 4. Train
+|  Dataset  |    HighD    | NGSIM-I80 |   Lyft    |
+| :-------: | :---------: | :-------: | :-------: |
+| time step | 0.04 (25Hz) | 0.1(10Hz) | 0.1(10Hz) |
 
 ### 4.1 SDT
 1. trian lstm
 ```shell
-python train.py --cfg=./config/lstm.yaml --hyp=./config/hyp.yaml --dataset_path=/path/to/your/dataset --val_dataset_path=/path/to/dataset --history_windows_length=25 --name=train1 --device cuda:0 --linear_normal True --batch_size 64 --epochs 100 --noise 0.001 
+python train.py --cfg=./config/lstm.yaml --hyp=./config/hyp.yaml --dataset_path=/path/to/your/dataset --val_dataset_path=/path/to/dataset --history_windows_length=25 --name=train1 --device cuda:0 --linear_normal True --batch_size 64 --epochs 100 --noise 0.001 --time_step 0.04
 ```
 2. trian gru
 ```shell
-python train.py --cfg=./config/gru.yaml --hyp=./config/hyp.yaml --dataset_path=/path/to/your/dataset --val_dataset_path=/path/to/ngsim/dataset --history_windows_length=25 --name=train1 --device cuda:0 --linear_normal True --batch_size 64 --epochs 100 --noise 0.001 --tsi 1
+python train.py --cfg=./config/gru.yaml --hyp=./config/hyp.yaml --dataset_path=/path/to/your/dataset --val_dataset_path=/path/to/ngsim/dataset --history_windows_length=25 --name=train1 --device cuda:0 --linear_normal True --batch_size 64 --epochs 100 --noise 0.001 --tsi 1 --time_step 0.04
 ```
 
 ### 4.2 SWT
