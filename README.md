@@ -9,7 +9,8 @@
 
 ## 2. Datasets
   - The datasets are hosted on [Google Drive](https://drive.google.com/file/d/1XDldCBtzTQ3wK9hZOBOqs7bwdZUEjIr2/view?usp=drive_link).
-  - Use the provided download link to obtain the datasets and place them under the designated project directory .
+  - Use the provided download link to obtain the datasets and place them under the designated project directory.
+
 
 ## 3. Dataset preprocessing
   - The downloaded data is stored in a trajectory-wise format.
@@ -41,7 +42,6 @@ python train.py --cfg ./config/gru.yaml --hyp ./config/hyp.yaml --dataset_path /
 ```
 
 
-
 # 5. Test
 
 |  Dataset  |    HighD    | NGSIM-I80 |   Lyft    |
@@ -60,8 +60,11 @@ python test.py --weights /path/to/pth --cfg ./config/lstm.yaml --history_windows
 python test.py --weights /path/to/pth --cfg ./config/gru.yaml --history_windows_length 25 --dateset_path /path/to/test/dataset --linear_normal True --name test_gru --device cuda:0 --time_step 0.04
 ```
 
+# 6. CheckPoint
+The checkpoints are hosted on [Google Drive](https://drive.google.com/file/d/1bpExRiesjT1_MHPShR829IkNWPU67KhT/view?usp=sharing).
 
 
-
+# 7. Result
 
 ![image-20250910201003899](./doc/image-test-result.png)
+
